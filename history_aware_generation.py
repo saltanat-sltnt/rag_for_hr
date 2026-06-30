@@ -28,7 +28,15 @@ def ask_question(user_question):
     else:
         search_question = user_question
 
-    retriever = db.as_retriever(search_kwargs={"k": 5})
+    # retriever = db.as_retriever(search_kwargs={"k": 5})
+    retriever = db.as_retriever(
+        search_type="mmr",
+        search_kwargs={
+            "k": 5,             # final num of docs
+            "fetch_k": 10,      # pool to choose from
+            "lambda_mult": 0.5  # 0 = max diversity, 1 = max relevance
+        }
+    )
 
     relevant_docs = retriever.invoke(search_question)
 
