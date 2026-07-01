@@ -1,6 +1,6 @@
 import os
-from langchain_community.document_loaders import TextLoader, DirectoryLoader, PyPDFLoader
-from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
+from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
@@ -42,19 +42,19 @@ def split_documents(documents, chunk_size=800, chunk_overlap=0):
     # split documents into smaller chunks with overlap
     print("--- Splitting documents into chunks... ---")
 
-    text_splitter = CharacterTextSplitter(
-        # separator=" ",  # Default separator. Other options include ["\n\n", "\n", ". ", " ", ""]
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-    )
-
-    # recursive_splitter = RecursiveCharacterTextSplitter(
-    #     separators=["\n\n", "\n", ". ", " ", ""],  # Multiple separators
-    #     chunk_size=100,
-    #     chunk_overlap=0
+    # text_splitter = CharacterTextSplitter(
+    #     #separator=" ",  # Default separator. Other options include ["\n\n", "\n", ". ", " ", ""]
+    #     chunk_size=chunk_size,
+    #     chunk_overlap=chunk_overlap,
     # )
 
-    chunks = text_splitter.split_documents(documents)
+    recursive_splitter = RecursiveCharacterTextSplitter(
+        separators=["\n\n", "\n", ". ", " ", ""],  # Multiple separators
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap
+    )
+
+    chunks = recursive_splitter.split_documents(documents)
 
     if chunks:
         print(f"Split documents into {len(chunks)} chunks.")
