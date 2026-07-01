@@ -5,10 +5,18 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
 
+from config import (
+    PERSISTENT_DIRECTORY,
+    EMBEDDING_MODEL,
+    CHUNK_SIZE,
+    CHUNK_OVERLAP,
+    DOCS_PATH
+)
+
 load_dotenv()
 
 
-def load_documents(docs_path="docs"):
+def load_documents(docs_path=DOCS_PATH):
     # load all pdf documents from docs directory
     print(f"--- Loading docuemnts from {docs_path}... ---")
 
@@ -38,7 +46,7 @@ def load_documents(docs_path="docs"):
     return documents
 
 
-def split_documents(documents, chunk_size=800, chunk_overlap=0):
+def split_documents(documents, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
     # split documents into smaller chunks with overlap
     print("--- Splitting documents into chunks... ---")
 
@@ -62,10 +70,10 @@ def split_documents(documents, chunk_size=800, chunk_overlap=0):
     return chunks
 
 
-def create_vector_store(chunks, persist_directory="db/chroma_db"):
+def create_vector_store(chunks, persist_directory=PERSISTENT_DIRECTORY):
     # create and persist ChromaDB vector store
 
-    embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+    embedding_model = OpenAIEmbeddings(model=EMBEDDING_MODEL)
 
     print("--- Creating vector store... ---")
 
@@ -84,7 +92,7 @@ def main():
     print("Main funtion.")
 
     # 1. load the files
-    documents = load_documents(docs_path="docs")
+    documents = load_documents()
     # 2. chunk the files
     chunks = split_documents(documents)
     # 3. emded and store in Vector DB
