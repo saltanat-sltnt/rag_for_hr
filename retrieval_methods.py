@@ -96,10 +96,12 @@ def get_hybrid_retriever(db, k=5, vector_weight=0.5, keyword_weight=0.5):
 
     return hybrid_retriever
 
+
 # def test_retriever():
 #     db = load_vectorstore()
 
-#     query = "Какие основные цели кадровой политики КМГ указаны в разделе 4.1?"
+#     # query = "Какие основные цели кадровой политики КМГ указаны в разделе 4.1?"
+#     query = "Сколько времени занимает выполнение мероприятия «Карта возможностей»?"
 #     print(f"Searching for: {query}\n")
 
 #     # Choose one retriever here
